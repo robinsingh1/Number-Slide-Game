@@ -1,1 +1,24 @@
+<head>
+	<link rel=StyleSheet href="boostrap.css" Type="text/css">
+	<script href="jquery-1.7.2" type="text/javascript"></script>
+	<script href="sammy.js" type="text/javascript" ></script>
+</head>
+<body>
 My Github Page
+	<div id="#main">
+		Lets see ..
+	</div>
+</body>
+<script>
+	var app = $.sammy(function()
+		
+		this.get('#lol', function(){
+			$('#main').text('Welcome!');
+		});
+	
+	});
+
+	$(function(){
+		app.run();
+	});
+</script>
