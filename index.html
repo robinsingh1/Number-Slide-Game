@@ -8,12 +8,17 @@ My Github Page
 	<div id="main">
 		Lets see wassup ...
 	</div>
+	<div id="content"></div>
 </body>
 <script>
-	var app = Sammy(function(){
+	var app = $.sammy(function(){
 		
-		this.get('#/lol', function(){
-			$('#main').text('Welcome!');
+		this.element_selector = "#content";
+
+		this.get('#/lol', function(context){
+			//$('#main').text('Welcome!');
+			context.app.swap('');
+			context.$element().append('<h1>inbox</h1>');
 		});
 	
 	});
