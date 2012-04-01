@@ -1,0 +1,28 @@
+/*  Test Stylesheet */
+
+.lol
+{
+	background-color:red;
+}
+#label
+{
+	margin-top:0px;
+	font-size:20px;
+	color:white;
+}
+#sidebar
+{
+  background-color:blue;
+}
+#container
+{
+  border-style:solid;border-color:black;border-width:10px;
+}
+.box
+{
+  background-color:orange;height:100px;width:100px;margin-top:10px;margin-left:10px;margin-right:0px;margin-bottom:0px;
+}
+.empty_space
+{
+  background-color:red;height:100px;width:100px;margin-top:10px;margin-left:10px;margin-right:0px;margin-bottom:0px;
+}

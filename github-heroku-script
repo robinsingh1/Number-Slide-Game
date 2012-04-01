@@ -1,0 +1,9 @@
+#My first shell script
+clear
+echo "Knowledge is Power"
+let cnt=0
+for f in `git remote -v`; do
+  echo "File -> $f"
+	arr[$cnt]="$f"
+	cnt=$(($cnt + 1))
+done
