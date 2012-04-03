@@ -15,6 +15,22 @@ var board = function () {};
 var game = function () {};
 /* ---------------------- *******  ---------------------- */
 
+/*-------------------  Global Variables -------------- */
+var all_pieces = new Array();
+var is_touchin = new Array();
+
+var one_piece = new piece('#div1', 0);     
+var two_piece = new piece('#div2', 1);     
+var three_piece = new piece('#div3', 2);     
+var four_piece = new piece('#div4', 3);     
+var five_piece = new piece('#div5', 4);     
+var six_piece = new piece('#div6', 5);     
+var seven_piece = new piece('#div7', 6);     
+var eight_piece = new piece('#div8', 7);   
+var empty = new piece('#empty', 8);
+
+/*------------------- ***************** -------------- */
+
 piece.prototype = {
 	update: function () {
     	this.top_y = $(id).offset().top;
@@ -23,16 +39,13 @@ piece.prototype = {
 		this.bottom_y = top_x + $(id).outerHeight(true);
     }
 }
-
-var all_pieces = new Array();
-
 game.prototype = {
     test: function(){
 		alert('game_test');
 	},
 	// Create A New Game
 	new_game: function () {     
-		var store_array = [0, 1, 2, 3, 4, 5, 6, 7, 8];     
+		var store_array = [1, 2, 3, 4, 5, 6, 7, 8, 9];     
 		var temp1, temp2, i;     
 		
 		// The Order of the store_array is shuffled
@@ -45,26 +58,26 @@ game.prototype = {
 		}
 
         // Piece Objects are instantiated by the number label within them
-        var one_piece = new piece('#div1', store_array[0]);     
-        var two_piece = new piece('#div2', store_array[1]);     
-        var three_piece = new piece('#div3', store_array[2]);     
-        var four_piece = new piece('#div4', store_array[3]);     
-        var five_piece = new piece('#div5', store_array[4]);     
-        var six_piece = new piece('#div6', store_array[5]);     
-        var seven_piece = new piece('#div7', store_array[6]);     
-        var eight_piece = new piece('#div8', store_array[7]);   
-        var empty = new piece('#empty', store_array[8]);
+        one_piece = new piece('#div1', store_array[0]);     
+        two_piece = new piece('#div2', store_array[1]);     
+        three_piece = new piece('#div3', store_array[2]);     
+        four_piece = new piece('#div4', store_array[3]);     
+        five_piece = new piece('#div5', store_array[4]);     
+        six_piece = new piece('#div6', store_array[5]);     
+        seven_piece = new piece('#div7', store_array[6]);     
+        eight_piece = new piece('#div8', store_array[7]);   
+        empty = new piece('#empty', store_array[8]);
     	
 		//store
-    	all_pieces[0] =  one_piece;
-    	all_pieces[1] =  two_piece;
-    	all_pieces[2] =  three_piece;
-    	all_pieces[3] =  four_piece;
-    	all_pieces[4] =  five_piece;
-    	all_pieces[5] =  six_piece;
-    	all_pieces[6] =  seven_piece;
-    	all_pieces[7] =  eight_piece;
-		all_pieces[8] = empty;
+    	all_pieces[1] =  one_piece;
+    	all_pieces[2] =  two_piece;
+    	all_pieces[3] =  three_piece;
+    	all_pieces[4] =  four_piece;
+    	all_pieces[5] =  five_piece;
+    	all_pieces[6] =  six_piece;
+    	all_pieces[7] =  seven_piece;
+    	all_pieces[8] =  eight_piece;
+		all_pieces[9] = empty;
 
 		console.log('new_game');
 	},
@@ -78,7 +91,7 @@ board.prototype = {
 		alert(all_pieces[0].position);
 	},
 	new_board: function(){
-		console.log('new board');
+		console.log('sdfanew board');
 		//put pieces in the position that they should go
 		var i, position, temp_i;
 		var temp_html = new Array();
@@ -86,20 +99,85 @@ board.prototype = {
 			temp_i = i;
 			temp_i = i.toString();
 			var temp_html_string = $('#position_'+temp_i).html();
-			temp_html[i-1] = temp_html_string;
+			temp_html[i] = temp_html_string;
 			//console.log(temp_html[i]);
 		}
-		console.log(all_pieces[8].position);
-		for(i=0;i<9;i++){	
+		for(i=1;i<=9;i++){	
 			temp_i = i;
 			temp_i = i.toString();
 			var pos = all_pieces[i].position;
-			pos = pos +1;
 			pos = pos.toString();
-			//$('#position_'+pos).html('');
 			$('#position_'+pos).html(temp_html[i]);
 		}
-	}	
+	},
+	
+	slide: function() {
+		//set_draggable sets the divs that can be dragged
+		//if a div goes over a third over the empty space auto-slide
+
+    	var x1 = $div1.offset().left;   
+    	var y1 = $div1.offset().top;   
+    	var h1 = $div1.outerHeight(true);   
+    	var w1 = $div1.outerWidth(true);   
+    	var b1 = y1 + h1 / 1.5;   
+   		var r1 = x1 + w1;   
+    	var x2 = $div2.offset().left;   
+    	var y2 = $div2.offset().top;   
+    	var h2 = $div2.outerHeight(true);   
+    	var w2 = $div2.outerWidth(true);   
+    	var b2 = y2 + h2;   
+    	var r2 = x2 + w2;
+    	if (b1 > y2) {     
+        	return true;   
+    	}   
+    		return false;
+	},
+	set_draggable: function (position){
+		if(position%2 == 0){
+			if (position == 2){
+				is_touching = [1, 3, 5];
+			} else if (position == 4) {
+			is_touching = [1, 5, 7];
+			} else if (position == 6){
+			is_touching = [3, 5, 7];
+			}else if (position == 8){
+				is_touching = [5, 7, 9];
+			}
+		} else if (position%2==1) {
+			if (position == 3){
+				is_touching = [2, 6];
+			} else if (position == 1) {
+				is_touching = [2, 4];
+			} else if (position == 7){
+				is_touching = [4, 8];
+			} else if (position == 9){
+				is_touching = [6, 8];
+			}
+			 else if(position == 5) {
+			is_touching = [2, 4, 6, 8];
+			}
+		}
+		
+		var length = is_touching.length;
+		for(i=0;i<length;i++){
+			console.log(is_touching[i]);
+			var pos = is_touching[i];
+			pos = pos.toString();
+			var ids = $('#position_'+pos).children().attr('id');
+			console.log(ids);
+			var id = empty.position;
+			x1 = $('#box_9').offset().left;
+			y1 = $('#box_9').offset().top;
+			x2 = $('#'+ids).offset().left;
+			y2 = $('#'+ids).offset().top;
+			if (x1 != x2){
+				$('#'+ids).draggable({axis : 'x'});
+			} else if (y1 != y2) {
+				$('#'+ids).draggable({axis : 'y'});
+			}
+		}
+		//return 0;
+	}
 };
 /*
 old_board.protoype = {

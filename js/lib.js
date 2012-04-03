@@ -7,33 +7,59 @@ function new_game() {
 	//New Game and New Board
 	Game.new_game();
 	Board.new_board();
+	//Set Empty space as droppable
+	$('#box_9').droppable({
+		over: function(event, ui) {
+			var id = $('.ui-draggable-dragging').attr("id");
+			var empty_pos = empty.position;
+			empty_pos = empty_pos.toString();
+			parent_id = $('#'+id).parent().attr('id');
+			parent_id_2 = $('#box_9').parent().attr('id');
+			console.log(parent_id);
+
+			//Offset From Top Left Corner of browser window 
+			var pos = $('#box_9').offset();
+			var pos_dragging = $('#'+id).offset();
+			console.log(pos.left);
+
+			var left = pos.left;
+			var top = pos.top;
+			$('#'+id).css({'position': 'absolute', 'top':pos_dragging.top-10, 'left':pos_dragging.left-10});
+			$('#'+id).animate({
+				top: top-10,
+				left: left-10
+			}, {
+				complete: function(){
+					var temp_html = $('#'+parent_id_2).html();
+					var temp_html2 = $('#'+parent_id).html();
+					$('#'+parent_id).html(temp_html);
+					$('#'+parent_id_2).html(temp_html2);
+					
+					$('#'+parent_id).css({'height':'100', 'width':'0'});
+					$('#'+parent_id_2).css({'height':'110', 'width':'0'});
+				}
+			});
+			$('#'+parent_id).css({'height':'110', 'width':'110'});
+			$('#'+parent_id_2).css({'height':'100', 'width':'110'});
+		}
+	});
 }
 
 function alert_position(){
-	alert(one_piece.position);
+	Board.set_draggable(empty.position);
+	//is_touching is an array of all touching divs
+	//iterate through access div within div -> set draggable
 }
 
-function collision($div1, $div2) {   
-    var x1 = $div1.offset().left;   
-    var y1 = $div1.offset().top;   
-    var h1 = $div1.outerHeight(true);   
-    var w1 = $div1.outerWidth(true);   
-    var b1 = y1 + h1 / 1.5;   
-    var r1 = x1 + w1;   
-    var x2 = $div2.offset().left;   
-    var y2 = $div2.offset().top;   
-    var h2 = $div2.outerHeight(true);   
-    var w2 = $div2.outerWidth(true);   
-    var b2 = y2 + h2;   
-    var r2 = x2 + w2;
+window.setInterval(function () {
+	//collision();
+}, 200);
 
-       
-    if (b1 > y2) {     
-        return true;   
-    }   
-    return false;
+function alert_position(){
+	Board.set_draggable(empty.position);
+	//is_touching is an array of all touching divs
+	//iterate through access div within div -> set draggable
 }
-
 
 function stop_movement_t(y2) {   
     var y1 = 0;   
@@ -41,19 +67,9 @@ function stop_movement_t(y2) {
         if (y1 == y2) {       
             return true;     
         }     
-        return false;   
+        	return false;   
     }
 }
-
-function is_touching() {
-    var top_probe = empty.top_y + 30;
-    var left_probe = empty.left_x + 30;
-    var right_probe = empty.right_x + 30; 
-    var bottom_probe = empty.bottom_y + 30;
-
-    //mark columns and row
-}
-
 window.setInterval(function () {}, 200);
 /*  Refactoring the size of the blocks depending on the size of the window -- Come back to this
    // For Now just focus on static blocks
