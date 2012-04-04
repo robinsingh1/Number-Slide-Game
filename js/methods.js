@@ -139,7 +139,7 @@ board.prototype = {
 			} else if (position == 4) {
 			is_touching = [1, 5, 7];
 			} else if (position == 6){
-			is_touching = [3, 5, 7];
+			is_touching = [3, 5, 9];
 			}else if (position == 8){
 				is_touching = [5, 7, 9];
 			}
@@ -157,23 +157,47 @@ board.prototype = {
 			is_touching = [2, 4, 6, 8];
 			}
 		}
-		
+		console.log("set_draggable");
 		var length = is_touching.length;
-		for(i=0;i<length;i++){
-			console.log(is_touching[i]);
-			var pos = is_touching[i];
-			pos = pos.toString();
-			var ids = $('#position_'+pos).children().attr('id');
-			console.log(ids);
-			var id = empty.position;
-			x1 = $('#box_9').offset().left;
-			y1 = $('#box_9').offset().top;
-			x2 = $('#'+ids).offset().left;
-			y2 = $('#'+ids).offset().top;
-			if (x1 != x2){
-				$('#'+ids).draggable({axis : 'x'});
-			} else if (y1 != y2) {
-				$('#'+ids).draggable({axis : 'y'});
+		var count;
+		for(i=0;i<9;i++){
+			var touching = false;
+
+			//iterate through is touching if within the array then make it draggable
+			for(count=0;count<length;count++){
+				if (i+1 == is_touching[count]){
+					touching = true;
+				}
+			}
+			if (touching){
+				var pos = i+1;
+				pos = pos.toString();
+				var ids = $('#position_'+pos).children().attr('id');
+				var id = empty.position;
+			
+				//What axis should the box be draggable
+				x1 = $('#box_9').offset().left;
+				y1 = $('#box_9').offset().top;
+				x2 = $('#'+ids).offset().left;
+				y2 = $('#'+ids).offset().top;
+				//$('#'+ids).addClass('ui-draggable');
+                $('#'+ids).draggable('enable');
+				if (x1 != x2){
+					$('#'+ids).draggable({axis:'x'});
+				} else if (y1 != y2) {
+					$('#'+ids).draggable({axis:'y'});
+				} else {
+					console.log("empty");
+				}
+				//console.log(i+1);
+			} else {
+				var pos = i+1;
+				pos = pos.toString();
+				var ids = $('#position_'+pos).children().attr('id');
+				$('#'+ids).draggable('disable');
+                //$('#'+ids).draggable('option', 'disabled', true, );
+                //$('#'+ids).removeClass('ui-draggable');
+                $('#'+ids).removeClass('ui-state-disabled');
 			}
 		}
 		//return 0;
