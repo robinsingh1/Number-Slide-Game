@@ -19,8 +19,6 @@ function new_game() {
 	Game.new_game();
 	Board.new_board();
 	//Set Empty space as droppable
-    
-
 }
 
 function alert_position(){
@@ -30,16 +28,15 @@ function alert_position(){
     $('#'+parent_id_2).droppable({tolerance: 'touch',
         drop: function(event, ui) {
             var id = $('.ui-draggable-dragging').attr("id");
-            var pos_dragging = $('#'+id).offset;
+            var pos_dragging = $('#'+id).offset();
             var parent_drag_id = $('#'+id).parent().attr('id');
             var height= $('#'+id).height();
             var width = $('#'+id).width();
-            
-            
+          
             $('#'+parent_drag_id).css({'height':height+10,'width':width});
             parent_drag_id_offset = $('#'+parent_drag_id).offset();
             //$('#'+id).css({'position': 'absolute', 'top':parent_drag_id_offset.top, 'left':parent_drag_id_offset.left});
-            $('#'+id).css({'position': 'absolute', 'top':pos_dragging.top, 'left':pos_dragging.left});
+            $('#'+id).css({'position': 'absolute', 'top':pos_dragging.top-10,'left':pos_dragging.left-10});
 
            /*
              if ($('#'+id).css('position')=='absolute'){
@@ -50,7 +47,7 @@ function alert_position(){
             */
         
             $('#'+id).animate({
-                top: parent_drag_id_offset.top,
+                top: parent_drag_id_offset.top-10,
 				left: parent_drag_id_offset.left
 			});
         
