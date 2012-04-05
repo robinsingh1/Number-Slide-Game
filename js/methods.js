@@ -157,6 +157,7 @@ board.prototype = {
 			is_touching = [2, 4, 6, 8];
 			}
 		}
+        
 		console.log("set_draggable");
 		var length = is_touching.length;
 		var count;
@@ -178,61 +179,38 @@ board.prototype = {
 				//What axis should the box be draggable
 				x1 = $('#box_9').offset().left;
 				y1 = $('#box_9').offset().top;
+                
 				x2 = $('#'+ids).offset().left;
 				y2 = $('#'+ids).offset().top;
-				//$('#'+ids).addClass('ui-draggable');
                 $('#'+ids).draggable('enable');
+                
 				if (x1 != x2){
-					$('#'+ids).draggable({axis:'x'});
+                    if (x1 > x2){
+                        var new_x1 = x1+$('.box').width();
+                        $('#'+ids).draggable({axis:'x',containment: [x2-10,y2,new_x1,y1]
+                        });
+                    } else {
+                        $('#'+ids).draggable({axis:'x',containment: [x1,y1,x2-10,y2]});
+                    }
+					
+                    
 				} else if (y1 != y2) {
-					$('#'+ids).draggable({axis:'y'});
-				} else {
-					console.log("empty");
-				}
-				//console.log(i+1);
+                    if (y1 > y2){
+                        var new_y1 = y1+$('.box').height()+10;
+                        $('#'+ids).draggable({axis:'y',containment: [x2,y2-10,x1,new_y1]});
+                    } else {
+                       $('#'+ids).draggable({axis:'y',containment: [x1,y1,x2,y2-10]});
+                    }
+					
+				} 
 			} else {
 				var pos = i+1;
 				pos = pos.toString();
 				var ids = $('#position_'+pos).children().attr('id');
 				$('#'+ids).draggable('disable');
-                //$('#'+ids).draggable('option', 'disabled', true, );
-                //$('#'+ids).removeClass('ui-draggable');
                 $('#'+ids).removeClass('ui-state-disabled');
 			}
 		}
 		//return 0;
 	}
 };
-/*
-old_board.protoype = {
-    // The Animations that happen when a piece is slid x% of the empty space
-	test: function () {
-		alert("board test");
-	},
-	new_board: function () {
-		// is there anyway to iterate through all the objects?	
-		//alert(all_pieces[0].position);
-		alert("new_board");
-	}
-
-	slide: function () {
-		$('#result').text(collision($('#div1'), $('#div2')));     
-		if (collision($('#div1'), $('#div2'))) {       
-			if (true) {
-				$("#div1").animate({
-					top: '+=10'
-				}, 1000);       
-            } else if (true) {
-				$('#div2').animate({
-					top: '-=10'         
-                }, 1000);       
-            }     
-        }   
-    },
-
-    // Which divs are allowed to move
-    set_draggable_divs: function () {     
-		document.write('lol');   
-	},
-    set_position: function () {}
-*/
