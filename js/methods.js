@@ -87,9 +87,6 @@ game.prototype = {
 };
 
 board.prototype = {
-	test: function () {
-		alert(all_pieces[0].position);
-	},
 	new_board: function(){
 		console.log('sdfanew board');
 		//put pieces in the position that they should go
@@ -110,27 +107,82 @@ board.prototype = {
 			$('#position_'+pos).html(temp_html[i]);
 		}
 	},
-	
-	slide: function() {
-		//set_draggable sets the divs that can be dragged
-		//if a div goes over a third over the empty space auto-slide
+	bounce_back: function(){
+			var id = $('.ui-draggable-dragging').attr("id");
+            var pos_dragging = $('#'+id).offset();
+            var parent_drag_id = $('#'+id).parent().attr('id');
+            var height= $('#'+id).height();
+            var width = $('#'+id).width();
+          
+            $('#'+parent_drag_id).css({'height':height+10,'width':width});
+            parent_drag_id_offset = $('#'+parent_drag_id).offset();
+				
+        		if ($('#'+id).css('position')=='absolute'){
+                	var the_top = parent_drag_id_offset.top;
+					console.log('absolute');
+				} else if($('#'+id).css('position')=='relative') {
+                	var the_top = parent_drag_id_offset.top-10;
+					console.log('relative');
+				}
+			//var the_top = parent_drag_id_offset.top-10;
+            $('#'+id).css({'position': 'absolute', 'top':pos_dragging.top-10,'left':pos_dragging.left-10});
+            $('#'+id).animate({
+                top: the_top,
+				left: parent_drag_id_offset.left
+			}, {
+				complete: function(){
+					 $('#'+parent_drag_id).css({'height':height+10,'width':width});
+				}
+			});
+	},
 
-    	var x1 = $div1.offset().left;   
-    	var y1 = $div1.offset().top;   
-    	var h1 = $div1.outerHeight(true);   
-    	var w1 = $div1.outerWidth(true);   
-    	var b1 = y1 + h1 / 1.5;   
-   		var r1 = x1 + w1;   
-    	var x2 = $div2.offset().left;   
-    	var y2 = $div2.offset().top;   
-    	var h2 = $div2.outerHeight(true);   
-    	var w2 = $div2.outerWidth(true);   
-    	var b2 = y2 + h2;   
-    	var r2 = x2 + w2;
-    	if (b1 > y2) {     
-        	return true;   
-    	}   
-    		return false;
+	slide: function() {
+		//if a div goes over a half over the empty space auto-slide
+	        console.log("al_pos");
+            //When an item has started dragging
+			var id = $('.ui-draggable-dragging').attr("id");
+            var pos_dragging = $('#'+id).offset();
+            
+            //Parents of Empty and Dragging
+			parent_id = $('#'+id).parent().attr('id');
+			parent_id_2 = $('#box_9').parent().attr('id');
+
+			//Offset From Top Left Corner of browser window of empty
+			var pos = $('#box_9').offset();
+            var left = pos.left;
+			var top = pos.top;
+            
+            var empty_height = $('.box').height();
+            
+            //While Dragging
+			$('#'+id).css({'position': 'absolute', 'top':pos_dragging.top-10, 'left':pos_dragging.left-10});
+			$('#'+id).animate({
+				top: top-10,
+				left: left-10
+			}, {
+				complete: function(){
+					var temp_html = $('#'+parent_id_2).html();
+					var temp_html2 = $('#'+parent_id).html();
+					$('#'+parent_id).html(temp_html);
+					$('#'+parent_id_2).html(temp_html2);
+					
+					//$('#'+parent_id).css({'height':'100', 'width':'0'});
+					//$('#'+parent_id_2).css({'height':'110', 'width':'0'});
+                    
+                    $('#'+parent_id).css({'height':empty_height, 'width':'0'});
+					$('#'+parent_id_2).css({'height':empty_height+10, 'width':'0'});
+                
+                    empty.position = parseInt(parent_id.charAt(9));
+					console.log("data");
+					//console.log(parent_id.charAt(9))
+					console.log(empty.position);
+                    Board.set_draggable(empty.position);
+					console.log($('#'+id).draggable("option", "axis"));
+				}
+			});
+            
+			$('#'+parent_id).css({'height':empty_height+10, 'width':empty_height+10});
+			$('#'+parent_id_2).css({'height':empty_height, 'width':empty_height+10});
 	},
 	set_draggable: function (position){
 		if(position%2 == 0){
