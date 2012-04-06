@@ -11,7 +11,8 @@ function new_game() {
 function check(){
 	$('#'+$('#box_9').parent().attr('id')).droppable({tolerance: 'touch',
         drop: function(event, ui) {
-            Board.bounce_back();
+            console.log('bounce_back');
+			Board.bounce_back();
         }
     });
 
@@ -24,5 +25,5 @@ function check(){
     Board.set_draggable(empty.position);
 }
 window.setInterval(function () {
-    check();
-}, 1000);
+	check();
+}, 250);
