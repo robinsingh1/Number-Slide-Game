@@ -187,30 +187,32 @@ board.prototype = {
 				if (x1 != x2){
                     if (x1 > x2){
                         var new_x1 = x1+$('.box').width();
-                        $('#'+ids).draggable({axis:'x',containment: [x2-10,y2,new_x1,y1]
-                        });
+                        $('#'+ids).draggable({axis:'x',containment: [x2-10,y2,new_x1,y1]});
+                        //$('#'+ids).draggable("option", "axis", 'x', "containment", [x2-10,y2,new_x1,y1])
+						
                     } else {
                         $('#'+ids).draggable({axis:'x',containment: [x1,y1,x2-10,y2]});
-                    }
-					
-                    
+                    	//$('#'+ids).draggable("option", "axis", 'x', "containment", [x1,y1,x2-10,y2])
+					}
+                    //console.log($('#'+ids).draggable("option", "axis"));
 				} else if (y1 != y2) {
                     if (y1 > y2){
                         var new_y1 = y1+$('.box').height()+10;
-                        $('#'+ids).draggable({axis:'y',containment: [x2,y2-10,x1,new_y1]});
-                    } else {
-                       $('#'+ids).draggable({axis:'y',containment: [x1,y1,x2,y2-10]});
-                    }
-					
+                        $('#'+ids).draggable({axis:'y',containment: [x2,y2-10,x1,new_y1]})
+                    	//$('#'+ids).draggable("option", "axis", 'y', "containment", [x2,y2-10,x1,new_y1])
+					} else {
+                       $('#'+ids).draggable({axis:'y',containment: [x1,y1,x2,y2-10]})
+                       //$('#'+ids).draggable("option", "axis", 'y', "containment", [x1,y1,x2,y2-10])
+					}
 				} 
 			} else {
 				var pos = i+1;
 				pos = pos.toString();
 				var ids = $('#position_'+pos).children().attr('id');
-				$('#'+ids).draggable('disable');
-                $('#'+ids).removeClass('ui-state-disabled');
+				//$('#'+ids).draggable('disable');
+                $('#'+ids).draggable('destroy');
+				$('#'+ids).removeClass('ui-state-disabled');
 			}
 		}
-		//return 0;
 	}
 };

@@ -103,7 +103,11 @@ function alert_position(){
 					$('#'+parent_id_2).css({'height':empty_height+10, 'width':'0'});
                 
                     empty.position = parseInt(parent_id.charAt(9));
+					console.log("data");
+					//console.log(parent_id.charAt(9))
+					console.log(empty.position);
                     Board.set_draggable(empty.position);
+					console.log($('#'+id).draggable("option", "axis"));
 				}
 			});
             
