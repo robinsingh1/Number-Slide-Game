@@ -36,7 +36,6 @@ function alert_position(){
             $('#'+parent_drag_id).css({'height':height+10,'width':width});
             parent_drag_id_offset = $('#'+parent_drag_id).offset();
             //$('#'+id).css({'position': 'absolute', 'top':parent_drag_id_offset.top, 'left':parent_drag_id_offset.left});
-            $('#'+id).css({'position': 'absolute', 'top':pos_dragging.top-10,'left':pos_dragging.left-10});
 
            /*
              if ($('#'+id).css('position')=='absolute'){
@@ -45,10 +44,23 @@ function alert_position(){
                 var pdi_offset = parent_drag_id_offset.top;
             }
             */
-        
+				
+        		if ($('#'+id).css('position')=='absolute'){
+                	var the_top = parent_drag_id_offset.top;
+					console.log('absolute');
+				} else if($('#'+id).css('position')=='relative') {
+                	var the_top = parent_drag_id_offset.top-10;
+					console.log('relative');
+				}
+			//	var the_top = parent_drag_id_offset.top-10;
+            $('#'+id).css({'position': 'absolute', 'top':pos_dragging.top-10,'left':pos_dragging.left-10});
             $('#'+id).animate({
-                top: parent_drag_id_offset.top-10,
+                top: the_top,
 				left: parent_drag_id_offset.left
+			}, {
+				complete: function(){
+					 $('#'+parent_drag_id).css({'height':height+10,'width':width});
+				}
 			});
         
         }
